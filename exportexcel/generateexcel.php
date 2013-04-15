@@ -11,7 +11,7 @@ require_once PHPExcel_PATH . 'Classes/PHPExcel.php';
 $data = utf8_encode($_POST['contenttoexcel']);
 $data = str_replace('%%SQUOT%%', '\'', $data);
 $data = str_replace('%%DQUOT%%', '\"', $data);
-$data = json_decode(html_entity_decode($data));
+$data = json_decode(html_entity_decode($data, ENT_COMPAT, "UTF-8"));
 $title = $data->title;
 $content = $data->items;
 $highestRow = count($content);
