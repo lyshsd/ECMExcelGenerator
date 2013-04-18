@@ -7,7 +7,7 @@
 	var errormsg = 'Export Excel Tool: Please use IE 8+, FF 3.5+, Chrome, Saf or Opera';
 	if(!doc.querySelectorAll) { console.info(errormsg); return; }
 	
-	var btntpl = '<span class="button-blue"><input type="button" id="xls_export_excel" value="Export Excel"></span>',
+	var btntpl = '<input type="button" id="xls_export_excel" value="Export Excel" class="ibm-btn-arrow-sec ibm-btn-small" />',
 		formtpl = '<form style="display: none;" id="searchresulttoexcelform" method="post" enctype="multipart/form-data" action="http://9.115.144.33/ecm_extensions/exportexcel/generateexcel.php"><input name="contenttoexcel" id="contenttoexcel" /></form>';
 		byId = function(id) {
 			return doc.getElementById(id);
@@ -22,9 +22,8 @@
 			}
 		},
 		init = function() {
-			var tbls = doc.querySelectorAll('table'), l = tbls.length;
-				tbls[l-1].querySelectorAll('td')[0].innerHTML += btntpl,
-				doc.querySelectorAll('#masthead')[0].innerHTML += formtpl;
+			doc.querySelectorAll('#refine')[0].parentNode.innerHTML += btntpl,
+			doc.querySelectorAll('#ibm-leadspace-head')[0].innerHTML += formtpl;
 			connect(byId('xls_export_excel'), 'click', function() {
 				generate();
 			});
@@ -34,14 +33,15 @@
 			data.title = ['skey', 'uid', 'status', 'title', 'owner', 'version', 'modified'];
 			data.items = [];
 			var _getRowData = function(/*DOM Node*/trrow) {
+				var cldn = trrow.children;
 				return [
-					trrow.querySelectorAll('td[headers=c_select] input')[1].value,
-					trrow.querySelectorAll('td[headers=c_select] input')[1].name.substr(4),
-					trrow.querySelectorAll('td[headers=c_status] td')[1].innerHTML.replace(/^\s|\&nbsp;/g, ''),
-					trrow.querySelectorAll('td[headers=c1] a')[1].innerHTML.replace(/'/g, "%%SQUOT%%").replace(/"/g, "%%DQUOT%%"),
-					trrow.querySelectorAll('td[headers=c2]')[0].innerHTML,
-					trrow.querySelectorAll('td[headers=c3]')[0].innerHTML,
-					trrow.querySelectorAll('td[headers=c4]')[0].innerHTML
+					cldn[0].querySelectorAll('input')[1].value,
+					cldn[0].querySelectorAll('th input')[1].name.substr(4),
+					cldn[1].querySelectorAll('div')[1].innerHTML.replace(/^\s|\&nbsp;/g, ''),
+					cldn[2].querySelectorAll('a')[1].innerHTML.replace(/'/g, "%%SQUOT%%").replace(/"/g, "%%DQUOT%%"),
+					cldn[3].innerHTML,
+					cldn[4].innerHTML,
+					cldn[5].innerHTML
 				];
 			};
 			var rows = doc.querySelectorAll('form[name=myForm] table tbody')[0].children,
